@@ -1,0 +1,36 @@
+# Ignorer le dossier node_modules
+node_modules/
+
+# Ignorer les fichiers générés par npm ou Yarn
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Ignorer les fichiers spécifiques à IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Ignorer les fichiers système courants
+.DS_Store
+Thumbs.db
+
+# Ignorer les fichiers de log
+*.log
+
+# Ignorer les fichiers temporaires ou de sauvegarde
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# Ignorer les fichiers compilés ou build
+dist/
+build/
+out/
+
+# Ignorer les fichiers générés par l'éditeur
+.vscode/
