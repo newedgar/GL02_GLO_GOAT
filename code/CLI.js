@@ -5,13 +5,14 @@ const { loadDataFromFile } = require('./Fonction.js');
 
 program
   .name('sru-scheduler')
-  .version('0.0.1')
+  .version('0.0.2')
   .description('Système de gestion des salles pour SRU')
 
   // Commande pour lire et afficher le contenu du fichier
   .command('read', 'Lire et afficher le contenu du fichier')
   .argument('<file>', 'Fichier d\'entrée à lire')
   .action(({ args }) => {
+    try {
       const calendar = loadDataFromFile(args.file);
       
       console.log('\n=== État du calendrier ===');
@@ -34,6 +35,10 @@ program
       console.log('\n=== Salles utilisées ===');
       console.log(Array.from(rooms));
 
+    } catch (error) {
+      console.error('Erreur lors de la lecture du fichier:', error.message);
+      console.error(error.stack);
+    }
   })
 
 
@@ -43,6 +48,7 @@ program
   .argument('<roomName>', 'Nom de la salle')
   .option('--date <date>', 'Date spécifique (L, MA, ME, J, V, S, D)', { validator: ['L', 'MA', 'ME', 'J', 'V', 'S', 'D'] })
   .action(({ args, options }) => {
+    try {
       const calendar = loadDataFromFile(args.file);
       const roomSlots = calendar.getTimeslotsByRoom(args.roomName);
       
@@ -80,6 +86,10 @@ program
           }
         });
       });
+      
+    } catch (error) {
+      console.error('Erreur:', error.message);
+    }
   })
 
 
