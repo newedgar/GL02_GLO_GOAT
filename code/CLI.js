@@ -191,9 +191,27 @@ program
       icalContent += 'END:VCALENDAR\n';
       fs.writeFileSync(args.outputFile, icalContent);
       console.log(`Fichier iCalendar exporté vers ${args.outputFile}`);
-    });
-
+    })
+  
   // F6: Vérifier les conflits
+  .command('check-conflicts', 'Vérifier les conflits de planning')
+  .argument('<file>', 'Fichier d\'entrée à lire')
+  .action(({ args }) => {
+      const calendar = loadDataFromFile(args.file);
+      const conflicts = [];
+      calendar.timeslots.forEach(ts => {
+          if (calendar.hasConflicts(ts)) {
+              conflicts.push(ts);
+          }
+      });
+      if (conflicts.length > 0) {
+          console.log(`Conflits détectés:`);
+          conflicts.forEach(conflict => console.log(conflict));
+      } else {
+          console.log('Aucun conflit détecté.');
+      }
+    });
+  
 
   // F7: Liste de tous les créneaux
 
