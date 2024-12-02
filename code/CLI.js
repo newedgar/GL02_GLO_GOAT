@@ -14,7 +14,7 @@ program
   .action(({ args }) => {
     try {
       const calendar = loadDataFromFile(args.file);
-      
+
       console.log('\n=== État du calendrier ===');
       console.log('Nombre de créneaux :', calendar.timeslots.length);
       
@@ -41,6 +41,11 @@ program
     }
   })
 
+// F1: Trouver les salles pour un cours
+// Fonction manquante ici
+
+// F2: Capacité maximale d'une salle
+// Fonction manquante ici
 
 // F3: Vérifier la disponibilité d'une salle
   .command('check-availability', 'Vérifier la disponibilité d\'une salle')
@@ -93,7 +98,7 @@ program
   })
 
 
-  // Liste des salles par créneau horaire
+// F4: Liste des salles par créneau horaire
   .command('list-rooms', 'Lister les salles par créneau horaire')
   .argument('<file>', 'Fichier d\'entrée à lire')
   .option('--date <date>', 'Jour spécifique (L, MA, ME, J, V, S, D)', { validator: ['L', 'MA', 'ME', 'J', 'V', 'S', 'D'] })
@@ -147,6 +152,14 @@ program
       });
     });
   });
+
+// F5: Exporter au format iCalendar
+
+// F6: Vérifier les conflits
+
+// F7: Liste de tous les créneaux
+
+// F8: Liste des salles disponibles pour une plage horaire
 
 
 // Lancement du programme
