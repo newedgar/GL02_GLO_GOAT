@@ -2,6 +2,8 @@
 const { program } = require('@caporal/core');
 const { TeachingTimeslot, Calendar } = require('./Classes.js');
 const { loadDataFromFile } = require('./Fonction.js');
+const fs = require('fs');
+
 
 program
   .name('sru-scheduler')
@@ -120,8 +122,7 @@ program
       console.error('Erreur:', error.message);
     }
   })
-
-
+  
   // F4: Liste des salles par créneau horaire
   .command('list-rooms', 'Lister les salles par créneau horaire')
   .argument('<file>', 'Fichier d\'entrée à lire')
@@ -175,9 +176,22 @@ program
         });
       });
     });
-  });
+  })
 
   // F5: Exporter au format iCalendar
+  .command('export-ical', 'Exporter les créneaux au format iCalendar')
+  .argument('<file>', 'Fichier d\'entrée à lire')
+  .argument('<outputFile>', 'Fichier de sortie pour l\'export iCalendar')
+  .action(({ args }) => {
+      const calendar = loadDataFromFile(args.file);
+      let icalContent = 'BEGIN:VCALENDAR\nVERSION:2.0\n';
+      calendar.timeslots.forEach(ts => {
+          icalContent += `BEGIN:VEVENT\nSUMMARY:${ts.courseType}\nLOCATION:${ts.roomName}\nDTSTART:${ts.date}T${ts.startTime.replace(':', '')}00\nDTEND:${ts.date}T${ts.endTime.replace(':', '')}00\nEND:VEVENT\n`;
+      });
+      icalContent += 'END:VCALENDAR\n';
+      fs.writeFileSync(args.outputFile, icalContent);
+      console.log(`Fichier iCalendar exporté vers ${args.outputFile}`);
+    });
 
   // F6: Vérifier les conflits
 
