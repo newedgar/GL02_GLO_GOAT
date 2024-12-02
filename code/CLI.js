@@ -41,13 +41,37 @@ program
     }
   })
 
-// F1: Trouver les salles pour un cours
-// Fonction manquante ici
+  // F1: Trouver les salles pour un cours
+    .command('find-rooms-by-course', 'Trouver les salles associées à un cours')
+    .argument('<file>', 'Fichier d\'entrée à lire')
+    .argument('<courseId>', 'Identifiant du cours')
+    .action(({ args }) => {
+      const calendar = loadDataFromFile(args.file);
+      const timeslots = calendar.timeslots.filter(ts => ts.courseType === args.courseId);
+      if (timeslots.length > 0) {
+        console.log(`Salles pour le cours ${args.courseId}:`);
+        timeslots.forEach(ts => console.log(ts));
+      } else {
+        console.log(`Aucune salle trouvée pour le cours ${args.courseId}`);
+      }
+    })
 
-// F2: Capacité maximale d'une salle
-// Fonction manquante ici
+  // F2: Capacité maximale d'une salle
+    .command('max-capacity', 'Afficher la capacité maximale d\'une salle')
+    .argument('<file>', 'Fichier d\'entrée à lire')
+    .argument('<roomName>', 'Nom de la salle')
+    .action(({ args }) => {
+      const calendar = loadDataFromFile(args.file);
+      const roomTimeslots = calendar.getTimeslotsByRoom(args.roomName);
+      if (roomTimeslots.length > 0) {
+        const maxCapacity = Math.max(...roomTimeslots.map(ts => ts.capacity));
+        console.log(`Capacité maximale de la salle ${args.roomName}: ${maxCapacity}`);
+      } else {
+        console.log(`Salle ${args.roomName} introuvable.`);
+      }
+    })
 
-// F3: Vérifier la disponibilité d'une salle
+  // F3: Vérifier la disponibilité d'une salle
   .command('check-availability', 'Vérifier la disponibilité d\'une salle')
   .argument('<file>', 'Fichier d\'entrée à lire')
   .argument('<roomName>', 'Nom de la salle')
@@ -98,7 +122,7 @@ program
   })
 
 
-// F4: Liste des salles par créneau horaire
+  // F4: Liste des salles par créneau horaire
   .command('list-rooms', 'Lister les salles par créneau horaire')
   .argument('<file>', 'Fichier d\'entrée à lire')
   .option('--date <date>', 'Jour spécifique (L, MA, ME, J, V, S, D)', { validator: ['L', 'MA', 'ME', 'J', 'V', 'S', 'D'] })
@@ -153,14 +177,11 @@ program
     });
   });
 
-// F5: Exporter au format iCalendar
+  // F5: Exporter au format iCalendar
 
-// F6: Vérifier les conflits
+  // F6: Vérifier les conflits
 
-// F7: Liste de tous les créneaux
-
-// F8: Liste des salles disponibles pour une plage horaire
-
+  // F7: Liste de tous les créneaux
 
 // Lancement du programme
 program.run();
