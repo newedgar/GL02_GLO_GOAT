@@ -1,0 +1,23 @@
+{
+  "name": "gl02_glo_goat",
+  "version": "1.0.0",
+  "description": "&nbsp; # Sujet A - Teaching Room Occupancy Management System ##### _✨Antoine MALIDOR, Guillaume ROZAND, Mathias NOTTER et Mathis RESLINGER✨_ &nbsp; ### This subject is about the room occupancy system in the Sealand Republic University ##### The university specification are : - Search for Rooms by Course - Maximum Room Capacity - Room Availability - List of Available Rooms for a Given Time Slot - iCalendar (RFC 5545) File Generation - Data Quality Verification",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://GL_GLOAT_GIT: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@github.com/Mathias97440/GL02_GLO_GOAT.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mathias97440/GL02_GLO_GOAT/issues"
+  },
+  "homepage": "https://github.com/Mathias97440/GL02_GLO_GOAT#readme",
+  "dependencies": {
+    "@caporal/core": "^2.0.7"
+  }
+}
