@@ -5,7 +5,7 @@ const { loadDataFromFile } = require('./Fonction.js');
 
 program
   .name('sru-scheduler')
-  .version('0.0.2')
+  .version('0.0.3')
   .description('Système de gestion des salles pour SRU')
 
   // Commande pour lire et afficher le contenu du fichier
@@ -91,6 +91,61 @@ program
       console.error('Erreur:', error.message);
     }
   })
+
+
+  // Liste des salles par créneau horaire
+  .command('list-rooms', 'Lister les salles par créneau horaire')
+  .argument('<file>', 'Fichier d\'entrée à lire')
+  .option('--date <date>', 'Jour spécifique (L, MA, ME, J, V, S, D)', { validator: ['L', 'MA', 'ME', 'J', 'V', 'S', 'D'] })
+  .option('--time <time>', 'Heure spécifique (format HH:MM)', { validator: /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/ })
+  .option('--status <status>', 'Filtre par statut (available/occupied)', { validator: ['available', 'occupied'] })
+  .action(({ args, options }) => {
+      const calendar = loadDataFromFile(args.file);
+      const allRooms = calendar.getAllRoomNames();
+      
+      // Définition des jours et créneaux horaires à afficher
+      const days = options.date 
+        ? [options.date] 
+        : ['L', 'MA', 'ME', 'J', 'V'];
+        
+      const timeSlots = options.time 
+        ? [options.time]
+        : Array.from({length: 13}, (_, i) => `${(i + 8).toString().padStart(2, '0')}:00`);
+
+      days.forEach(day => {
+        timeSlots.forEach(time => {
+          console.log(`\n=== ${day} ${time} ===`);
+          
+          // Pour chaque salle, vérifie si elle est occupée à ce moment
+          allRooms.forEach(room => {
+            const roomSlots = calendar.getTimeslotsByRoom(room);
+            const isOccupied = roomSlots.some(slot => {
+              return slot.date === day && 
+                     time >= slot.startTime && 
+                     time < slot.endTime;
+            });
+
+            // Récupère les détails si la salle est occupée
+            const occupiedSlot = roomSlots.find(slot => {
+              return slot.date === day && 
+                     time >= slot.startTime && 
+                     time < slot.endTime;
+            });
+
+            // Affiche selon le filtre demandé
+            if (!options.status || 
+                (options.status === 'available' && !isOccupied) || 
+                (options.status === 'occupied' && isOccupied)) {
+              
+              if (isOccupied) {
+                console.log(`  ${room} : Occupé - ${occupiedSlot.courseType} (${occupiedSlot.startTime}-${occupiedSlot.endTime})`);
+              } else {
+                console.log(`  ${room} : Disponible`);
+              }
+            }
+          });
+        });
+      });
 
 
 // Lancement du programme
