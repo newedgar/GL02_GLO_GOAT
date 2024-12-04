@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const { program } = require('@caporal/core');
 const { TeachingTimeslot, Calendar } = require('./Classes.js');
-const { loadDataFromFile } = require('./Fonction.js');
+const { loadDataFromFile, getConflicts } = require('./Fonction.js');
 const fs = require('fs');
 
 
@@ -202,21 +202,25 @@ program
   // F6: Vérifier les conflits
   .command('check-conflicts', 'Vérifier les conflits de planning')
   .argument('<file>', 'Fichier d\'entrée à lire')
-  .action(({ args }) => {
+  .action
+  (({ args }) => {
+    try {
       const calendar = loadDataFromFile(args.file);
-      const conflicts = [];
-      calendar.timeslots.forEach(ts => {
-          if (calendar.hasConflicts(ts)) {
-              conflicts.push(ts);
-          }
-      });
+      const conflicts = getConflicts(calendar);
+      
       if (conflicts.length > 0) {
-          console.log(`Conflits détectés:`);
-          conflicts.forEach(conflict => console.log(conflict));
+        console.log('Conflits trouvés:');
+        conflicts.forEach(conflict => {
+          console.log(`Conflit entre ${conflict.slot1.courseType} et ${conflict.slot2.courseType} dans la salle ${conflict.slot1.roomName} à ${conflict.slot1.startTime}-${conflict.slot1.endTime}`);
+        });
       } else {
-          console.log('Aucun conflit détecté.');
+        console.log('Aucun conflit trouvé.');
       }
-    });
+    } catch (error) {
+      console.error('Erreur lors de la vérification des conflits:', error.message);
+      console.error(error.stack);
+    }
+  })
   
 
   // F7: Liste de tous les créneaux

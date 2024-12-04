@@ -50,5 +50,20 @@ function getAllCruFiles(dir) {
   return files;
 }
 
+function getConflicts(calendar) {
+  const conflicts = [];
+  for (let i = 0; i < calendar.timeslots.length; i++) {
+    for (let j = i + 1; j < calendar.timeslots.length; j++) {
+      if (calendar.timeslots[i].conflictsWith(calendar.timeslots[j])) {
+        conflicts.push({
+          slot1: calendar.timeslots[i],
+          slot2: calendar.timeslots[j]
+        });
+      }
+    }
+  }
+  return conflicts;
+}
 
-module.exports = { loadDataFromFile, getAllCruFiles };
+
+module.exports = { loadDataFromFile, getAllCruFiles, getConflicts };

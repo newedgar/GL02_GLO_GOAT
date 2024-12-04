@@ -10,6 +10,13 @@ class TeachingTimeslot {
     this.roomName = roomName;
   }
 
+  conflictsWith(other) {
+    return this.day === other.day &&
+           this.roomName === other.roomName &&
+           ((this.startTime >= other.startTime && this.startTime < other.endTime) ||
+            (other.startTime >= this.startTime && other.startTime < this.endTime));
+  }
+
   // Equivalence operation
   equals(other) {
     return this.courseType === other.courseType &&
