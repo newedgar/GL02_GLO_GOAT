@@ -48,14 +48,19 @@ program
     .argument('<file>', 'Fichier d\'entrée à lire')
     .argument('<courseId>', 'Identifiant du cours')
     .action(({ args }) => {
-      const calendar = loadDataFromFile(args.file);
-      const timeslots = calendar.timeslots.filter(ts => ts.courseType === args.courseId);
-      if (timeslots.length > 0) {
-        console.log(`Salles pour le cours ${args.courseId}:`);
-        timeslots.forEach(ts => console.log(ts));
-      } else {
-        console.log(`Aucune salle trouvée pour le cours ${args.courseId}`);
+      try{
+        const calendar = loadDataFromFile(args.file);
+        const timeslots = calendar.timeslots.filter(ts => ts.courseType === args.courseId);
+        if (timeslots.length > 0) {
+          console.log(`Salles pour le cours ${args.courseId}:`);
+          timeslots.forEach(ts => console.log(ts));
+        } else {
+          console.log(`Aucune salle trouvée pour le cours ${args.courseId}`);
+        }
       }
+        catch (error) {
+            console.error('Erreur:', error.message);
+        }
     })
 
   // F2: Capacité maximale d'une salle
@@ -63,13 +68,18 @@ program
     .argument('<file>', 'Fichier d\'entrée à lire')
     .argument('<roomName>', 'Nom de la salle')
     .action(({ args }) => {
-      const calendar = loadDataFromFile(args.file);
-      const roomTimeslots = calendar.getTimeslotsByRoom(args.roomName);
-      if (roomTimeslots.length > 0) {
-        const maxCapacity = Math.max(...roomTimeslots.map(ts => ts.capacity));
-        console.log(`Capacité maximale de la salle ${args.roomName}: ${maxCapacity}`);
-      } else {
-        console.log(`Salle ${args.roomName} introuvable.`);
+      try {
+        const calendar = loadDataFromFile(args.file);
+        const roomTimeslots = calendar.getTimeslotsByRoom(args.roomName);
+        if (roomTimeslots.length > 0) {
+          const maxCapacity = Math.max(...roomTimeslots.map(ts => ts.capacity));
+          console.log(`Capacité maximale de la salle ${args.roomName}: ${maxCapacity}`);
+        } else {
+          console.log(`Salle ${args.roomName} introuvable.`);
+        }
+      }
+      catch (error) {
+        console.error('Erreur:', error.message);
       }
     })
 
