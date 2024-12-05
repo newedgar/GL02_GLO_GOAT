@@ -232,8 +232,14 @@ program
     }
   })
   
-
-  // F7: Liste de tous les créneaux
+  // F7: Lister tous les créneaux
+.command('list-timeslots', 'Lister tous les créneaux')
+.argument('<file>', 'Fichier d\'entrée à lire')
+.action(({ args }) => {
+    const calendar = loadDataFromFile(args.file);
+    console.log(`Total de créneaux chargés : ${calendar.timeslots.length}`);
+    calendar.timeslots.forEach(ts => console.log(ts));
+  });
 
 // Lancement du programme
 program.run();

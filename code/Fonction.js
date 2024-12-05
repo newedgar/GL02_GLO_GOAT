@@ -50,6 +50,7 @@ function getAllCruFiles(dir) {
   return files;
 }
 
+// Fonction pour vérifier qu'il n'y a pas de conflits d'emploi du temps
 function getConflicts(calendar) {
   const conflicts = [];
   for (let i = 0; i < calendar.timeslots.length; i++) {
