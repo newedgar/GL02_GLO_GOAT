@@ -19,5 +19,8 @@
   "homepage": "https://github.com/Mathias97440/GL02_GLO_GOAT#readme",
   "dependencies": {
     "@caporal/core": "^2.0.7"
+  },
+  "devDependencies": {
+    "jasmine": "^5.5.0"
   }
 }
