@@ -199,15 +199,21 @@ program
   .argument('<file>', 'Fichier d\'entrée à lire')
   .argument('<outputFile>', 'Fichier de sortie pour l\'export iCalendar')
   .action(({ args }) => {
+    try {
       const calendar = loadDataFromFile(args.file);
       let icalContent = 'BEGIN:VCALENDAR\nVERSION:2.0\n';
       calendar.timeslots.forEach(ts => {
-          icalContent += `BEGIN:VEVENT\nSUMMARY:${ts.courseType}\nLOCATION:${ts.roomName}\nDTSTART:${ts.date}T${ts.startTime.replace(':', '')}00\nDTEND:${ts.date}T${ts.endTime.replace(':', '')}00\nEND:VEVENT\n`;
+        icalContent += `BEGIN:VEVENT\nSUMMARY:${ts.courseType}\nLOCATION:${ts.roomName}\nDTSTART:${ts.date}T${ts.startTime.replace(':', '')}00\nDTEND:${ts.date}T${ts.endTime.replace(':', '')}00\nEND:VEVENT\n`;
       });
       icalContent += 'END:VCALENDAR\n';
       fs.writeFileSync(args.outputFile, icalContent);
       console.log(`Fichier iCalendar exporté vers ${args.outputFile}`);
-    })
+    } catch (error) {
+      console.error('Erreur lors de l\'exportation iCalendar:', error.message);
+      console.error(error.stack);
+    }
+  })
+
   
   // F6: Vérifier les conflits
   .command('check-conflicts', 'Vérifier les conflits de planning')
