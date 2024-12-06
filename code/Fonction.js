@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { TeachingTimeslot, Calendar } = require('./Classes.js');
 
+// Fonction pour charger les données depuis un fichier .cru
 function loadDataFromFile(filename) {
   const data = fs.readFileSync(filename, 'utf-8');
   const lines = data.split('\n');

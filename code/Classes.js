@@ -50,7 +50,7 @@ class Calendar {
 
   isEmpty() {
     return this.timeslots.length === 0;
-  }
+  } 
 
   addTimeslot(timeslot) {
     this.timeslots.push(timeslot);
@@ -81,6 +81,41 @@ class Calendar {
   getAllRoomNames() {
     return [...new Set(this.timeslots.map(t => t.roomName))];
   }
+
+  getAvailableRooms(date, time) {
+    const availableRooms = new Set();
+    for (const room of this.getAllRoomNames()) {
+      const slots = this.getTimeslotsByRoom(room);
+      const isOccupied = slots.some(slot => slot.date === date && time >= slot.startTime && time < slot.endTime);
+      if (!isOccupied) {
+        availableRooms.add(room);
+      }
+    }
+    return availableRooms;
+  }
+
+  getOccupiedRooms(date, time) {
+    const occupiedRooms = new Set();
+    for (const room of this.getAllRoomNames()) {
+      const slots = this.getTimeslotsByRoom(room);
+      const isOccupied = slots.some(slot => slot.date === date && time >= slot.startTime && time < slot.endTime);
+      if (isOccupied) {
+        occupiedRooms.add(room);
+      }
+    }
+    return occupiedRooms;
+  }
+
+  getRoomsByAvailability(date, time) {
+    const availableRooms = this.getAvailableRooms(date, time);
+    const occupiedRooms = this.getOccupiedRooms(date, time);
+    return {
+      available: [...availableRooms],
+      occupied: [...occupiedRooms],
+      all: [...this.getAllRoomNames()]
+    };
+  }
+
 }
 
 module.exports = {
