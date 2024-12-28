@@ -57,21 +57,21 @@ class Calendar {
   }
 
   isInCalendar(timeslot) {
-    return this.timeslots.some(t => t.equals(timeslot));
+    return this.timeslots.some(item => item.equals(timeslot));
   }
 
   hasConflicts(timeslot) {
-    return this.timeslots.some(t => t.roomName === timeslot.roomName && (t.isBefore(timeslot) || t.isAfter(timeslot)));
+    return this.timeslots.some(item => item.roomName === timeslot.roomName && (item.isBefore(timeslot) || item.isAfter(timeslot)));
   }
 
   getTimeslotsByRoom(roomName) {
-    return this.timeslots.filter(t => t.roomName === roomName);
+    return this.timeslots.filter(timeslot => timeslot.roomName === roomName);
   }
 
   getFreeRoomsByDateAndTime(date, time) {
     const rooms = new Set();
     for (const room of this.getAllRoomNames()) {
-      if (!this.timeslots.some(t => t.date === date && t.startTime === time && t.roomName === room)) {
+      if (!this.timeslots.some(timeslot => timeslot.date === date && timeslot.startTime === time && timeslot.roomName === room)) {
         rooms.add(room);
       }
     }
@@ -79,7 +79,7 @@ class Calendar {
   }
 
   getAllRoomNames() {
-    return [...new Set(this.timeslots.map(t => t.roomName))];
+    return [...new Set(this.timeslots.map(timeslot => timeslot.roomName))];
   }
 
   getAvailableRooms(date, time) {
