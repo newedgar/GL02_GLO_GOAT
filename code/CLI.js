@@ -138,7 +138,6 @@ program
   .argument('<file>', 'Fichier d\'entrée à lire')
   .option('--date <date>', 'Jour spécifique (L, MA, ME, J, V, S, D)', { validator: ['L', 'MA', 'ME', 'J', 'V', 'S', 'D'] })
   .option('--time <time>', 'Heure spécifique (format HH:MM)', { validator: /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/ })
-  .option('--status <status>', 'Filtre par statut (available/occupied)', { validator: ['available', 'occupied'] })
   .action(({ args, options }) => {
     try {
       const calendar = loadDataFromFile(args.file);
@@ -166,24 +165,10 @@ program
                      time < slot.endTime;
             });
 
-            // Récupère les détails si la salle est occupée
-            const occupiedSlot = roomSlots.find(slot => {
-              return slot.date === day && 
-                     time >= slot.startTime && 
-                     time < slot.endTime;
-            });
-
-            // Affiche selon le filtre demandé
-            if (!options.status || 
-                (options.status === 'available' && !isOccupied) || 
-                (options.status === 'occupied' && isOccupied)) {
-              
-              if (isOccupied) {
-                console.log(`  ${room} : Occupé - ${occupiedSlot.courseType} (${occupiedSlot.startTime}-${occupiedSlot.endTime})`);
-              } else {
-                console.log(`  ${room} : Disponible`);
-              }
+            if (!isOccupied) {
+              console.log(`  ${room} : Disponible`);
             }
+            
           });
         });
       });
