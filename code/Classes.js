@@ -10,12 +10,24 @@ class TeachingTimeslot {
     this.roomName = roomName;
   }
 
-  conflictsWith(other) {
-    return this.day === other.day &&
-           this.roomName === other.roomName &&
-           ((this.startTime >= other.startTime && this.startTime < other.endTime) ||
-            (other.startTime >= this.startTime && other.startTime < this.endTime));
+  static parseTime(timeString) {
+    const [hours, minutes] = timeString.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes, 0, 0);
+    return date;
   }
+
+  conflictsWith(other) {
+      const thisStart = TeachingTimeslot.parseTime(this.startTime);
+      const thisEnd = TeachingTimeslot.parseTime(this.endTime);
+      const otherStart = TeachingTimeslot.parseTime(other.startTime);
+      const otherEnd = TeachingTimeslot.parseTime(other.endTime);
+
+      return this.date === other.date &&
+        this.roomName === other.roomName &&
+        !(thisEnd <= otherStart || thisStart >= otherEnd);
+    }
+
 
   // Equivalence operation
   equals(other) {
@@ -40,6 +52,10 @@ class TeachingTimeslot {
     if (this.date === other.date && this.startTime >= other.endTime) return true;
     return false;
   }
+
+    toString() {
+        return `${this.courseType}, ${this.capacity}, ${this.date}, ${this.startTime}-${this.endTime}, ${this.roomName}`;
+    }
 }
 
 // Represents a calendar that manages teaching timeslots
@@ -57,21 +73,21 @@ class Calendar {
   }
 
   isInCalendar(timeslot) {
-    return this.timeslots.some(item => item.equals(timeslot));
+    return this.timeslots.some(t => t.equals(timeslot));
   }
 
   hasConflicts(timeslot) {
-    return this.timeslots.some(item => item.roomName === timeslot.roomName && (item.isBefore(timeslot) || item.isAfter(timeslot)));
+    return this.timeslots.some(t => t.roomName === timeslot.roomName && (t.isBefore(timeslot) || t.isAfter(timeslot)));
   }
 
   getTimeslotsByRoom(roomName) {
-    return this.timeslots.filter(timeslot => timeslot.roomName === roomName);
+    return this.timeslots.filter(t => t.roomName === roomName);
   }
 
   getFreeRoomsByDateAndTime(date, time) {
     const rooms = new Set();
     for (const room of this.getAllRoomNames()) {
-      if (!this.timeslots.some(timeslot => timeslot.date === date && timeslot.startTime === time && timeslot.roomName === room)) {
+      if (!this.timeslots.some(t => t.date === date && t.startTime === time && t.roomName === room)) {
         rooms.add(room);
       }
     }
@@ -79,7 +95,7 @@ class Calendar {
   }
 
   getAllRoomNames() {
-    return [...new Set(this.timeslots.map(timeslot => timeslot.roomName))];
+    return [...new Set(this.timeslots.map(t => t.roomName))];
   }
 
   getAvailableRooms(date, time) {

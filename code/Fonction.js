@@ -51,21 +51,29 @@ function getAllCruFiles(dir) {
   return files;
 }
 
+//注意！！！
 // Fonction pour vérifier qu'il n'y a pas de conflits d'emploi du temps
 function getConflicts(calendar) {
-  const conflicts = [];
-  for (let i = 0; i < calendar.timeslots.length; i++) {
-    for (let j = i + 1; j < calendar.timeslots.length; j++) {
-      if (calendar.timeslots[i].conflictsWith(calendar.timeslots[j])) {
-        conflicts.push({
-          slot1: calendar.timeslots[i],
-          slot2: calendar.timeslots[j]
-        });
-      }
+    const conflicts = [];
+    const timeslots = calendar.timeslots;
+    for (let i = 0; i < timeslots.length; i++) {
+        for (let j = i + 1; j < timeslots.length; j++) {
+            console.log(`Comparing: ${timeslots[i]} with ${timeslots[j]}`);
+            if (timeslots[i].conflictsWith(timeslots[j])) {
+                console.log(`Conflict detected between: ${timeslots[i]} and ${timeslots[j]}`);
+                conflicts.push({
+                    slot1: timeslots[i],
+                    slot2: timeslots[j]
+                });
+            }
+        }
     }
-  }
-  return conflicts;
+
+    return conflicts;
 }
+
+
+
 
 
 module.exports = { loadDataFromFile, getAllCruFiles, getConflicts };
