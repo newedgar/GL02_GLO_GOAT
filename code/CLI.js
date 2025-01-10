@@ -214,7 +214,6 @@ program
     }
   })
 
-  //修改！！
   // F6: Vérifier les conflits
   .command('check-conflicts', 'Vérifier les conflits de planning')
   .argument('<file>', 'Fichier d\'entrée à lire')

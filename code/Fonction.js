@@ -51,7 +51,6 @@ function getAllCruFiles(dir) {
   return files;
 }
 
-//注意！！！
 // Fonction pour vérifier qu'il n'y a pas de conflits d'emploi du temps
 function getConflicts(calendar) {
     const conflicts = [];
