@@ -4,10 +4,6 @@
 ##### _✨Antoine MALIDOR, Guillaume ROZAND, Mathias NOTTER et Mathis RESLINGER✨_
 ##### Forked by CLERC Edgar, LATH Victor, ZHENG Qi
 
-## Licence
-
-Ce projet est distribué sous la licence [GNU General Public License (GPL)](https://www.gnu.org/licenses/).
-
 &nbsp;
 ### This subject is about the room occupancy system in the Sealand Republic University
 ##### The university specification are :
@@ -17,6 +13,10 @@ Ce projet est distribué sous la licence [GNU General Public License (GPL)](http
 - List of Available Rooms for a Given Time Slot
 - iCalendar (RFC 5545) File Generation
 - Data Quality Verification
+
+## Licence
+
+Ce projet est distribué sous la licence [GNU General Public License (GPL)](https://www.gnu.org/licenses/).
 
 ## Installation
 
