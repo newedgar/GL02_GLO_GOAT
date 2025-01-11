@@ -10,12 +10,23 @@ class TeachingTimeslot {
     this.roomName = roomName;
   }
 
-  conflictsWith(other) {
-    return this.day === other.day &&
-           this.roomName === other.roomName &&
-           ((this.startTime >= other.startTime && this.startTime < other.endTime) ||
-            (other.startTime >= this.startTime && other.startTime < this.endTime));
+  static parseTime(timeString) {
+    const [hours, minutes] = timeString.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes, 0, 0);
+    return date;
   }
+
+  conflictsWith(other) {
+      const thisStart = TeachingTimeslot.parseTime(this.startTime);
+      const thisEnd = TeachingTimeslot.parseTime(this.endTime);
+      const otherStart = TeachingTimeslot.parseTime(other.startTime);
+      const otherEnd = TeachingTimeslot.parseTime(other.endTime);
+
+      return this.date === other.date &&
+        this.roomName === other.roomName &&
+        !(thisEnd <= otherStart || thisStart >= otherEnd);
+    }
 
   // Equivalence operation
   equals(other) {
