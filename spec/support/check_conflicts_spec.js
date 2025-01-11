@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { loadDataFromFile, getConflicts } = require('../../Fonction.js')
+const { loadDataFromFile, getConflicts } = require('../../code/Fonction.js')
 describe('TestRunner', () => {
   let testFile = 'test-conflicts-data.txt';
   let calendar = null;

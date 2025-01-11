@@ -65,7 +65,7 @@ class Calendar {
   }
 
   getTimeslotsByRoom(roomName) {
-  if (!this.isValidRoom(roomName)) {
+  if (this.isValidRoom(roomName)) {
     throw new Error(`Room ${roomName} does not exist`);
   }
     return this.timeslots.filter(timeslot => timeslot.roomName === roomName);
@@ -118,16 +118,17 @@ class Calendar {
       all: [...this.getAllRoomNames()]
     };
   }
-
   isValidRoom(roomName) {
     let rooms = this.getAllRoomNames();
-    for (const room of rooms) {
-      if (room.name === roomName) {
+
+    for (let room of rooms) {
+      if (room.length > 0 && room[0] === roomName) {
         return true;
       }
     }
     return false;
   }
+
 }
 
 module.exports = {
